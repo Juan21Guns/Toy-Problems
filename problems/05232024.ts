@@ -46,41 +46,35 @@
 */
 
 function checkParantheses(s: string) {
+    const openBrackets = {
+        '(': ')',
+        '{': '}',
+        '[': ']'
+    }
+
+    const closeBrackets = {
+        ')': '(',
+        '}': '{',
+        ']': '['
+    }
+
     if (s.length >= 1) {
         const queue: string[] = [];
 
         for (let i = 0; i < s.length; i++) {
-            if (s[i] == '(' || s[i] == '{' || s[i] == '[') {
+            if (openBrackets[s[i]]) {
                 queue.push(s[i]);
                 continue;
             }
-            
+
             if (queue.length == 0) {
                 return false;
             }
 
-            if (s[i] == ')') {
-                if (queue[queue.length - 1] == '(') {
-                    queue.pop();
-                    continue;
+            if (closeBrackets[s[i]]) {
+                if (closeBrackets[s[i]] !== queue.pop()) {
+                    return false;
                 }
-                return false;
-            }
-
-            if (s[i] == '}') {
-                if (queue[queue.length - 1] == '{') {
-                    queue.pop();
-                    continue;
-                }
-                return false;
-            }
-
-            if (s[i] == ']') {
-                if (queue[queue.length - 1] == '[') {
-                    queue.pop();
-                    continue;
-                }
-                return false;
             }
         }
 
