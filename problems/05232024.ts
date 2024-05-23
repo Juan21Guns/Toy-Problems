@@ -46,50 +46,45 @@
 */
 
 function checkParantheses(s: string) {
-    if ((s.length <= 104) && (s.length >= 1)) {
-        const storage = {
-            c: 0,
-            s: 0,
-            b: 0,
-        }
+    if (s.length >= 1) {
+        const queue: string[] = [];
 
         for (let i = 0; i < s.length; i++) {
-            switch (s[i]) {
-                case '(': 
-                    storage.c += 1;
-                    break;
-                case ')': 
-                    if (storage.c == 0) {
-                        return false;
-                    }
-                    storage.c -= 1;
-                    break;
-                case '{': 
-                    storage.s += 1;
-                    break;
-                case '}': 
-                    if (storage.s == 0) {
-                        return false;
-                    }
-                    storage.s -= 1;
-                    break;
-                case '[': 
-                    storage.b += 1;
-                    break;
-                case ']': 
-                    if (storage.b == 0) {
-                        return false;
-                    }
-                    storage.b -= 1;
-                    break;
-                default:
-                    return false;
+            if (s[i] == '(' || s[i] == '{' || s[i] == '[') {
+                queue.push(s[i]);
+                continue;
+            }
+            
+            if (queue.length == 0) {
+                return false;
+            }
+
+            if (s[i] == ')') {
+                if (queue[queue.length - 1] == '(') {
+                    queue.pop();
+                    continue;
+                }
+                return false;
+            }
+
+            if (s[i] == '}') {
+                if (queue[queue.length - 1] == '{') {
+                    queue.pop();
+                    continue;
+                }
+                return false;
+            }
+
+            if (s[i] == ']') {
+                if (queue[queue.length - 1] == '[') {
+                    queue.pop();
+                    continue;
+                }
+                return false;
             }
         }
-        
-        if (storage.c === 0 && storage.s === 0 && storage.b === 0) {
-            return true;
-        }
+
+        return queue.length == 0;
     }
 
     return false;
